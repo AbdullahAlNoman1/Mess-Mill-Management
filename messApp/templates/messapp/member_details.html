@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+    {% block title %}Members{% endblock %}
+
+    {% block css %}
+    {% endblock %}
+
+    {% block content %}
+    <section class="pt-5 pb-3">
+        <div class="conteinre">
+            <div class="row justify-content-center">
+                <h1>{{ member_details.name|title }}</h1>
+            </div>
+        </div>
+    </section>
+    <section class="py-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Expense Name</th>
+                      <th scope="col">Date</th>
+                      <th scope="col">Price</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for expense in member_details.expense_set.all %}
+                    <tr>
+                      <th scope="row">{{ forloop.counter }}</th>
+                      <td><a href="#">{{ expense.name|title }}</a></td>
+                      <td>{{ expense.timestimp }}</td>
+                      <td>{{ expense.price }}</td>
+                    </tr>
+                    {% endfor%}
+                  </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+    {% endblock %}
+
+    {% block js %}
+    {% endblock %}
