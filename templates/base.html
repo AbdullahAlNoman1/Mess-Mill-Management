@@ -18,6 +18,10 @@
     {% url "messapp:member" as member_url %}
     {% url "messapp:expense" as expense_url %}
     {% url "messapp:breakfast" as breakfast_url %}
+    {% url "messapp:launch" as launch_url %}
+    {% url "messapp:dinner" as dinner_url %}
+    {% url "messapp:meal" as meal_url %}
+    {% url "messapp:balance" as balance_url %}
   <!--<header>-->
     <!--<div class="container">-->
       <!--<div class="row">-->
@@ -35,23 +39,20 @@
               <li class="nav-item {% if request.path == member_url %}active{% endif%}">
                 <a class="nav-link" href="{{ member_url }}">Member</a>
               </li>
-              <!--<li class="nav-item {% if request.path == expense_url %}active{% endif%}">-->
-                <!--<a class="nav-link" href="{{ expense_url }}">Expenses</a>-->
-              <!--</li>-->
-              <li class="nav-item">
-                <a class="nav-link" href="#">Meal</a>
+              <li class="nav-item {% if request.path == meal_url %}active{% endif%}">
+                <a class="nav-link" href="{{ meal_url }}">Meal</a>
               </li>
-              <!--<li class="nav-item">-->
-                <!--<a class="nav-link" href="#">Balance</a>-->
-              <!--</li>-->
+             <li class="nav-item {% if request.path == balance_url %}active{% endif%}">
+                <a class="nav-link" href="{{ balance_url }}">Balance</a>
+              </li>
               <li class="nav-item {% if request.path == breakfast_url %}active{% endif%}">
                 <a class="nav-link" href="{{ breakfast_url }}">Breakfast</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Launch</a>
+              <li class="nav-item {% if request.path == launch_url %}active{% endif%}">
+                <a class="nav-link" href="{{ launch_url }}">Launch</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Dinner</a>
+              <li class="nav-item {% if request.path == dinner_url %}active{% endif%}">
+                <a class="nav-link" href="{{ dinner_url }}">Dinner</a>
               </li>
               <!--<li class="nav-item dropdown">-->
                 <!--<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
@@ -76,7 +77,15 @@
 
     {% block content %}
     {% endblock %}
-
+    <!--<footer class="bg-dark pt-3 pb-3">-->
+      <!--<div class="container">-->
+        <!--<div class="row">-->
+          <!--<div>-->
+              <!--<p class="text-light mb-0">Copyright © 2018 | Bazar Management System  All right Reserved</p>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</footer>-->
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>

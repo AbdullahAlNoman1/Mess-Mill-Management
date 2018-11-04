@@ -8,6 +8,9 @@ urlpatterns = [
     path('member/', views.MemberView.as_view(), name='member'),
     path('member/<pk>', views.MemberDetails.as_view(), name="member_details"),
     path('expense/', views.ExpenseView.as_view(), name="expense"),
-    # path('breakfast/', views.BreakfastView.as_view(), name="breakfast"),
+    path('balance/', views.balance_view, name="balance"),
     path('breakfast/', views.breakfastview, name="breakfast"),
+    path('launch/', views.launchview, name="launch"),
+    path('dinner/', views.dinnerview, name="dinner"),
+    path('meal/', views.mealview, name="meal"),
 ]

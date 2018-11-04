@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Member, Expense
+from .models import Member, Deposit, Expense, Meal
 
 
 class MemberAdmin(admin.ModelAdmin):
@@ -13,6 +13,17 @@ class MemberAdmin(admin.ModelAdmin):
 admin.site.register(Member, MemberAdmin)
 
 
+class DepositAdmin(admin.ModelAdmin):
+
+    list_display = ['__str__', 'total', 'timestimp']
+
+    class Meta:
+        model = Deposit
+
+
+admin.site.register(Deposit, DepositAdmin)
+
+
 class ExpenseAdmin(admin.ModelAdmin):
 
     list_display = ['name', 'buyer', 'price', 'meal_type', 'active', 'date']
@@ -23,3 +34,6 @@ class ExpenseAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Expense, ExpenseAdmin)
+
+
+admin.site.register(Meal)
