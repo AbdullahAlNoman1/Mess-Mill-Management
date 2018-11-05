@@ -2,6 +2,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils import timezone
 from datetime import timedelta
+from django.db.models import Sum
 
 today_date = timezone.datetime.now().date()
 next_day = today_date + timedelta(1)
@@ -45,11 +46,16 @@ class Member(models.Model):
 class Deposit(models.Model):
     member = models.ForeignKey(Member, on_delete=models.CASCADE)
     total = models.DecimalField(decimal_places=2, max_digits=10)
-    date = models.DateField(default=timezone.datetime.now().date())
-    timestimp = models.DateTimeField(default=timezone.datetime.now())
+    date = models.DateField()
+    timestimp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.member.name
+
+    @property
+    def member_deposit(self):
+        total_deposit =  Deposit.objects.filter(member=self.member).aggregate(Sum("total"))["total_sum"]
+        return total_deposit
 
 MEAL_TIME = (
     ('breakfast', 'Breakfast'),
@@ -96,7 +102,7 @@ class Expense(models.Model):
     name = models.CharField(max_length=250)
     price = models.DecimalField(decimal_places=2, max_digits=8)
     details = models.TextField(blank=True)
-    date = models.DateField(auto_now=False, auto_now_add=False, default=timezone.datetime.now().date())
+    date = models.DateField(auto_now=False, auto_now_add=False)
     timestimp = models.DateTimeField(auto_now=False, auto_now_add=True)
     active = models.BooleanField(default=True)
 
@@ -109,7 +115,7 @@ class Expense(models.Model):
 class Meal(models.Model):
     member = models.OneToOneField(Member, models.CASCADE)
     total = models.PositiveIntegerField()
-    date = models.DateField(default=timezone.datetime.now().date())
+    date = models.DateField()
 
     def __str__(self):
         return self.member.name

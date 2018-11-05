@@ -12,19 +12,28 @@
                 <table class="table table-striped">
                   <thead>
                     <tr>
-                      <th scope="col">Name</th>
-                      <th scope="col">Date</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Total Deposit</th>
+                        <!--<th scope="col">Date</th>-->
                     </tr>
                   </thead>
                   <tbody>
+
+
                     {% for obj in member_obj %}
                     <tr>
-                      <td>{{ obj.name|title }}</td>
+                        <td>{{ obj.name|title }}</td>
+
+                        <!--<th scope="col">{% for num in obj.deposit_set.all %}{{ num.total|add:num.total }}{% endfor %} </th>-->
+                        <!--<th scope="col">{{ obj.deposit_set.total }}</th>-->
+                        <!--<td>{% with member_total_deposit=0 %}-->
+                                <!--{% for num in obj.deposit_set.all %}-->
+                                <!--{{ member_total_deposit|add:num.total }}-->
+                                <!--{% endfor %}-->
+                            <!--{% endwith %}</td>-->
+                        <td>{{ obj.member_total }}</td>
                     </tr>
-                    <tr>
-                      <!--<td>{{ obj.deposit_set.total.all }}</td>-->
-                    </tr>
-                    {% endfor%}
+                    {% endfor %}
 
                   </tbody>
                 </table>

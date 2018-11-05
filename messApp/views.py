@@ -46,10 +46,11 @@ class ExpenseView(generic.ListView):
 
 
 def balance_view(request):
+    template_name = 'messapp/balance.html'
 
     deposit = Deposit.objects.all().aggregate(Sum('total'))['total__sum']
     members = Member.objects.all()
-    template_name = 'messapp/balance.html'
+    # memeber_deposit = Member.objects.filter()
 
     context ={
         'member_obj': members,
