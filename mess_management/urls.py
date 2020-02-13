@@ -21,6 +21,7 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('messApp.urls', namespace='messapp')),
+    path('', include('account.urls', namespace='account')),
 ]
 
 if settings.DEBUG:

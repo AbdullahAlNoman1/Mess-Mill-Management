@@ -15,7 +15,7 @@
   </head>
   <body>
     {% url "messapp:index" as index_url %}
-    {% url "messapp:member" as member_url %}
+    {% url "messapp:dash_broad" username=request.user as dashbroad_url %}
     {% url "messapp:expense" as expense_url %}
     {% url "messapp:breakfast" as breakfast_url %}
     {% url "messapp:launch" as launch_url %}
@@ -36,14 +36,11 @@
               <li class="nav-item {% if request.path == index_url %}active{% endif%}">
                 <a class="nav-link" href="{{ index_url }}">Home <span class="sr-only">(current)</span></a>
               </li>
-              <li class="nav-item {% if request.path == member_url %}active{% endif%}">
-                <a class="nav-link" href="{{ member_url }}">Member</a>
+                <li class="nav-item {% if request.path == expense_url %}active{% endif%}">
+                <a class="nav-link" href="{{ expense_url }}">Expense</a>
               </li>
               <li class="nav-item {% if request.path == meal_url %}active{% endif%}">
                 <a class="nav-link" href="{{ meal_url }}">Meal</a>
-              </li>
-             <li class="nav-item {% if request.path == balance_url %}active{% endif%}">
-                <a class="nav-link" href="{{ balance_url }}">Balance</a>
               </li>
               <li class="nav-item {% if request.path == breakfast_url %}active{% endif%}">
                 <a class="nav-link" href="{{ breakfast_url }}">Breakfast</a>
@@ -54,20 +51,21 @@
               <li class="nav-item {% if request.path == dinner_url %}active{% endif%}">
                 <a class="nav-link" href="{{ dinner_url }}">Dinner</a>
               </li>
-              <!--<li class="nav-item dropdown">-->
-                <!--<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
-                  <!--Dropdown-->
-                <!--</a>-->
-                <!--<div class="dropdown-menu" aria-labelledby="navbarDropdown">-->
-                  <!--<a class="dropdown-item" href="#">Action</a>-->
-                  <!--<a class="dropdown-item" href="#">Another action</a>-->
-                  <!--<div class="dropdown-divider"></div>-->
-                  <!--<a class="dropdown-item" href="#">Something else here</a>-->
-                <!--</div>-->
-              <!--</li>-->
-              <!--<li class="nav-item">-->
-                <!--<a class="nav-link" href="#">LogIn</a>-->
-              <!--</li>-->
+              {% if request.user.is_authenticated %}
+                <li class="nav-item ">
+                  <a class="nav-link" href="{% url 'account:logout' %}">Logout</a>
+                </li>
+                <li class="nav-item ml-4 {% if request.path == dashbroad_url %}active{% endif%}">
+                  <a class="nav-link py-2 px-4 bg-success text-white rounded" href="{{ dashbroad_url }}">{{ request.user|title }}</a>
+                </li>
+               {% else %}
+                <li class="nav-item ">
+                  <a class="nav-link" href="{% url 'account:registration' %}">Registration</a>
+                </li>
+               <li class="nav-item ">
+                  <a class="nav-link" href="{% url 'account:login' %}">login</a>
+                </li>
+              {% endif %}
             </ul>
           </div>
       </nav>
@@ -77,15 +75,13 @@
 
     {% block content %}
     {% endblock %}
-    <!--<footer class="bg-dark pt-3 pb-3">-->
-      <!--<div class="container">-->
-        <!--<div class="row">-->
-          <!--<div>-->
-              <!--<p class="text-light mb-0">Copyright © 2018 | Bazar Management System  All right Reserved</p>-->
-          <!--</div>-->
-        <!--</div>-->
-      <!--</div>-->
-    <!--</footer>-->
+    <footer class="bg-dark pt-3 pb-3">
+      <div class="container">
+        <div class="row">
+              <p class="text-light mb-0 mx-auto">Copyright © 2018 | Bazar Management System | Developed By <span class="bg-white text-dark p-2">Noman</span></p>
+        </div>
+      </div>
+    </footer>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>

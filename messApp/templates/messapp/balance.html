@@ -3,6 +3,21 @@
     {% block title %}Balance{% endblock %}
 
     {% block css %}
+      <style>
+            label{
+                display:block
+            }
+            input{
+                width: 100%
+             }
+            .helptext {
+                display: block;
+                font-size: 11px;
+            }
+            ul li{
+                font-size: 12px
+            }
+      </style>
     {% endblock %}
 
     {% block content %}
@@ -13,31 +28,45 @@
                   <thead>
                     <tr>
                         <th scope="col">Name</th>
+                        <th scope="col">Date</th>
                         <th scope="col">Total Deposit</th>
-                        <!--<th scope="col">Date</th>-->
                     </tr>
                   </thead>
                   <tbody>
 
 
+                    <!--{% for obj in obj %}-->
+                    <!--<tr>-->
+                        <!--<td>{{ obj.member.name|title }}</td>-->
+                        <!--<td>{{ obj.date }}</td>-->
+                        <!--<td>{{ obj.total }}</td>-->
+
+                    <!--</tr>-->
+                    <!--{% endfor %}-->
                     {% for obj in member_obj %}
                     <tr>
                         <td>{{ obj.name|title }}</td>
+                        <td>{{ obj.date }}</td>
+                        <td>{{ obj.total }}</td>
 
-                        <!--<th scope="col">{% for num in obj.deposit_set.all %}{{ num.total|add:num.total }}{% endfor %} </th>-->
-                        <!--<th scope="col">{{ obj.deposit_set.total }}</th>-->
-                        <!--<td>{% with member_total_deposit=0 %}-->
-                                <!--{% for num in obj.deposit_set.all %}-->
-                                <!--{{ member_total_deposit|add:num.total }}-->
-                                <!--{% endfor %}-->
-                            <!--{% endwith %}</td>-->
-                        <td>{{ obj.member_total }}</td>
                     </tr>
                     {% endfor %}
-
                   </tbody>
                 </table>
             </div>
+
+            <!--<div class="row mt-5">-->
+                <!--<div class="col-12 text-center">-->
+                    <!--<h2 class="bg-dark text-white py-3 mb-3">Make a Deposit</h2>-->
+                <!--</div>-->
+                <!--<div class="col-md-12">-->
+                    <!--<form method="POST" action="">-->
+                        <!--{% csrf_token %}-->
+                        <!--{{ form.as_p }}-->
+                        <!--<button class="btn btn-success" type="submit">Submit</button>-->
+                    <!--</form>-->
+                <!--</div>-->
+            <!--</div>-->
         </div>
     </section>
     {% endblock %}

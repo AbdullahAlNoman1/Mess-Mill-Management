@@ -36,4 +36,12 @@ class ExpenseAdmin(admin.ModelAdmin):
 admin.site.register(Expense, ExpenseAdmin)
 
 
-admin.site.register(Meal)
+class MealAdmin(admin.ModelAdmin):
+    list_display = ['__str__', 'meal_type', 'date', 'total']
+    list_filter = ['member', 'meal_type', 'date']
+
+    class Meta:
+        model = Meal
+
+
+admin.site.register(Meal, MealAdmin)

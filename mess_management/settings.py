@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'messApp.apps.MessappConfig',
+    'account.apps.AccountConfig',
 
 ]
 

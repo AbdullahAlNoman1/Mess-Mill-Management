@@ -2,18 +2,30 @@ from django.db import models
 from django.urls import reverse
 from django.utils import timezone
 from datetime import timedelta
+
+from django.conf import settings
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
 from django.db.models import Sum
+from django.db.models.signals import pre_save
 
 today_date = timezone.datetime.now().date()
 next_day = today_date + timedelta(1)
+
 
 class MemberQuerySet(models.query.QuerySet):
 
     def active(self):
         return self.filter(active=True)
 
-    def self_expense(self):
-        return self.filter(pk=self.pk).expense_set.all()
+    def expense(self, pk):
+        return self.filter(pk=pk).expense_set.all()
+
+    def deposits(self):
+        total_deposit = Deposit.objects.filter(member=self.pk)
+        return total_deposit
 
 
 class MemberManager(models.Manager):
@@ -24,8 +36,11 @@ class MemberManager(models.Manager):
     def all(self):
         return self.get_queryset().active()
 
-    def member_expense(self):
-        return self.get_queryset().self_expense()
+    def member_expense(self, pk):
+        return self.get_queryset().expense(pk)
+
+    def total_depo(self):
+        return self.get_queryset().deposits()
 
 
 class Member(models.Model):
@@ -42,20 +57,24 @@ class Member(models.Model):
     def get_absolute_url(self):
         return reverse('messapp:member_details', kwargs={'pk': self.pk})
 
+    @property
+    def total_deposit(self):
+        return self.total_depo()
+
 
 class Deposit(models.Model):
-    member = models.ForeignKey(Member, on_delete=models.CASCADE)
+    member = models.ForeignKey(User, on_delete=models.CASCADE)
     total = models.DecimalField(decimal_places=2, max_digits=10)
-    date = models.DateField()
+    date = models.DateField(auto_now=False, auto_now_add=False, default=timezone.now)
     timestimp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.member.name
+        return self.member.username
 
-    @property
-    def member_deposit(self):
-        total_deposit =  Deposit.objects.filter(member=self.member).aggregate(Sum("total"))["total_sum"]
-        return total_deposit
+    # @property
+    # def member_deposit(self):
+    #     total_deposit = Deposit.objects.filter(member=self.member).aggregate(Sum("total"))["total_sum"]
+    #     return total_deposit
 
 MEAL_TIME = (
     ('breakfast', 'Breakfast'),
@@ -97,12 +116,12 @@ class ExpenseManager(models.Manager):
 
 
 class Expense(models.Model):
-    meal_type = models.CharField(max_length=20, choices=MEAL_TIME, blank=True, null=True)
-    buyer = models.ForeignKey(Member, on_delete=models.CASCADE)
-    name = models.CharField(max_length=250)
+    meal_type = models.CharField(max_length=20, choices=MEAL_TIME, blank=True, null=True, verbose_name="Expense Type")
+    buyer = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=250, verbose_name="Item Name")
     price = models.DecimalField(decimal_places=2, max_digits=8)
     details = models.TextField(blank=True)
-    date = models.DateField(auto_now=False, auto_now_add=False)
+    date = models.DateField(auto_now=False, auto_now_add=False, default=timezone.now)
     timestimp = models.DateTimeField(auto_now=False, auto_now_add=True)
     active = models.BooleanField(default=True)
 
@@ -113,9 +132,20 @@ class Expense(models.Model):
 
 
 class Meal(models.Model):
-    member = models.OneToOneField(Member, models.CASCADE)
+    member = models.ForeignKey(User, models.CASCADE)
+    meal_type = models.CharField(max_length=20, choices=MEAL_TIME, blank=True, null=True)
     total = models.PositiveIntegerField()
-    date = models.DateField()
+    date = models.DateField(auto_now=False, auto_now_add=False, default=timezone.now)
 
     def __str__(self):
-        return self.member.name
+        return self.member.username
+
+    class Meta:
+        verbose_name_plural = 'Meal'
+        verbose_name = 'Meal By'
+
+# def meal_total_Pre_save(sender, instance, *args, **kwargs):
+#s
+#
+# pre_save.connect(meal_total_Pre_save, sender=Meal)
+

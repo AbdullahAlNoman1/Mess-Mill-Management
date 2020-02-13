@@ -24,7 +24,7 @@
                     <tr>
                       <th scope="row">{{ forloop.counter }}</th>
                       <td>{{ expense.name|title }}</td>
-                      <td>{{ expense.buyer.name }}</td>
+                      <td>{{ expense.buyer.username|title }}</td>
                       <td>{{ expense.date }}</td>
                       <td>{{ expense.price }}</td>
                     </tr>
